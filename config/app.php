@@ -149,7 +149,8 @@ return [
 		/*
 		 * Vendor Service Providers
 		 */
-		'AlienStream\Domain\Service\RepositoryServiceProvider'
+		'AlienStream\Domain\Service\RepositoryServiceProvider',
+        'Barryvdh\Cors\CorsServiceProvider',
 	],
 
 	/*
