@@ -1,8 +1,8 @@
-<?php namespace Manager\Repositories\Boundary;
+<?php namespace API\Repositories\Boundary;
 
 /**
  * Interface AbstractRepository
- * @package Manager\Repositories\Boundary
+ * @package API\Repositories\Boundary
  */
 interface AbstractRepository {
 

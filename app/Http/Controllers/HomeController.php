@@ -1,7 +1,7 @@
-<?php namespace Manager\Http\Controllers;
+<?php namespace API\Http\Controllers;
 
-use Manager\Repositories\Boundary\UserRepository;
-use Manager\Domain\Implementation\User;
+use API\Repositories\Boundary\UserRepository;
+use API\Domain\Implementation\User;
 
 class HomeController extends Controller
 {

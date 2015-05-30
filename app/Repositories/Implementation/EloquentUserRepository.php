@@ -1,11 +1,11 @@
-<?php namespace Manager\Repositories\Implementation;
+<?php namespace API\Repositories\Implementation;
 
-use Manager\Domain\Implementation\User;
-use Manager\Repositories\Boundary\UserRepository;
+use API\Domain\Implementation\User;
+use API\Repositories\Boundary\UserRepository;
 
 /**
  * Class EloquentUserRepository
- * @package Manager\Repositories\Implementation
+ * @package API\Repositories\Implementation
  */
 class EloquentUserRepository extends EloquentAbstractRepository implements UserRepository
 {

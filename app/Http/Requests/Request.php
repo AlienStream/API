@@ -1,4 +1,4 @@
-<?php namespace Manager\Http\Requests;
+<?php namespace API\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 

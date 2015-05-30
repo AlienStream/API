@@ -1,6 +1,6 @@
-<?php namespace Manager\Http\Controllers\Auth;
+<?php namespace API\Http\Controllers\Auth;
 
-use Manager\Http\Controllers\Controller;
+use API\Http\Controllers\Controller;
 use Illuminate\Contracts\Auth\Guard;
 use Illuminate\Contracts\Auth\Registrar;
 use Illuminate\Foundation\Auth\AuthenticatesAndRegistersUsers;

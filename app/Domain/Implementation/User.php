@@ -1,4 +1,4 @@
-<?php namespace Manager\Domain\Implementation;
+<?php namespace API\Domain\Implementation;
 
 use Illuminate\Auth\Authenticatable;
 use Illuminate\Database\Eloquent\Model;

@@ -1,4 +1,4 @@
-<?php namespace Manager\Exceptions;
+<?php namespace API\Exceptions;
 
 use Exception;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;

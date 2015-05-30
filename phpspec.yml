@@ -1,5 +1,5 @@
 suites:
     main:
-        namespace: Manager
-        psr4_prefix: Manager
+        namespace: API
+        psr4_prefix: API
         src_path: app
