@@ -13,8 +13,14 @@
 
 Route::get('/', 'WelcomeController@index');
 
-Route::get('home', 'HomeController@index');
-Route::get('users', 'HomeController@users');
+Route::get('track', 'TrackController@index');
+
+Route::get('communities', 'CommunityController@index');
+Route::get('communities/trending', 'CommunityController@trending');
+Route::get('communities/popular', 'CommunityController@popular');
+Route::get('communities/newest', 'CommunityController@newest');
+Route::get('community/{name}', 'CommunityController@byName');
+Route::get('community/{name}/tracks', 'CommunityController@byName_Tracks');
 
 Route::controllers([
 	'auth' => 'Auth\AuthController',

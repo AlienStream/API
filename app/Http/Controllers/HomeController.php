@@ -1,7 +1,7 @@
 <?php namespace API\Http\Controllers;
 
-use API\Repositories\Boundary\UserRepository;
-use API\Domain\Implementation\User;
+use AlienStream\Domain\Contracts\Repositories\UserRepository;
+use AlienStream\Domain\Implementation\Models\User;
 
 class HomeController extends Controller
 {
