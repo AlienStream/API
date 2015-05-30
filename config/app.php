@@ -136,8 +136,6 @@ return [
 		'Illuminate\Validation\ValidationServiceProvider',
 		'Illuminate\View\ViewServiceProvider',
 		'Illuminate\Html\HtmlServiceProvider',
-		'Morrislaptop\LaravelFivePackageBridges\ConfigServiceProvider',
-		'Morrislaptop\LaravelFivePackageBridges\Bridges\GeneratorsServiceProvider',
 
 		/*
 		 * Application Service Providers...

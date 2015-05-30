@@ -4,7 +4,7 @@
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "e2fff19712b333f03cc2fdb5817542b7",
+    "hash": "92dcc73e1b64a07ad7e57e41b2cbfbaa",
     "packages": [
         {
             "name": "AlienStream/Shared",
@@ -813,67 +813,6 @@
                 "psr-3"
             ],
             "time": "2015-03-09 09:58:04"
-        },
-        {
-            "name": "morrislaptop/laravel-five-package-bridges",
-            "version": "1.0.3",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/morrislaptop/LaravelFivePackageBridges.git",
-                "reference": "2d0f8f8d9ec4815395bcaf5b4ada24d63a1d001c"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/morrislaptop/LaravelFivePackageBridges/zipball/2d0f8f8d9ec4815395bcaf5b4ada24d63a1d001c",
-                "reference": "2d0f8f8d9ec4815395bcaf5b4ada24d63a1d001c",
-                "shasum": ""
-            },
-            "require": {
-                "laravel/framework": "~5.0"
-            },
-            "replace": {
-                "illuminate/support": "~4.2"
-            },
-            "require-dev": {
-                "camroncade/timezone": "dev-master",
-                "cartalyst/sentry": "~2.1",
-                "intervention/image": "~2.0",
-                "itsgoingd/clockwork": "~1.6",
-                "laracasts/flash": "~1.3",
-                "maatwebsite/excel": "~1.2",
-                "orchestra/testbench": "~3.0@dev",
-                "phpunit/phpunit": "~4.4",
-                "robbiep/cloudconvert-laravel": "~2.0@beta",
-                "way/generators": "~3.0"
-            },
-            "suggest": {
-                "camroncade/timezone": "Addon to assist with Timezone managemenr",
-                "cartalyst/sentry": "A framework agnostic authentication & authorization system. http://www.cartalyst.com",
-                "intervention/image": "PHP Image Manipulation http://image.intervention.io",
-                "itsgoingd/clockwork": "Server-side component of Clockwork, a Chrome extension for PHP development.",
-                "laracasts/flash": "Easy flash notifications https://packagist.org/packages/laracasts/flash",
-                "maatwebsite/excel": "An eloquent way of importing and exporting Excel and CSV files for Laravel with the power of PHPExcel http://www.maatwebsite.nl/laravel-excel/docs",
-                "robbiep/cloudconvert-laravel": "Provides API access to CloudConvert.com",
-                "way/generators": "Rapidly speed up your Laravel workflow with generators https://packagist.org/packages/way/generators"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-4": {
-                    "Morrislaptop\\LaravelFivePackageBridges\\": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Craig Morris",
-                    "email": "craig.michael.morris@gmail.com"
-                }
-            ],
-            "description": "Use your Laravel 4 packages in Laravel 5",
-            "time": "2015-03-02 21:50:35"
         },
         {
             "name": "mtdowling/cron-expression",
@@ -3005,52 +2944,6 @@
             "description": "Symfony Yaml Component",
             "homepage": "https://symfony.com",
             "time": "2015-05-02 15:18:45"
-        },
-        {
-            "name": "way/generators",
-            "version": "3.0.3",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/JeffreyWay/Laravel-4-Generators.git",
-                "reference": "4a215769643507326192a739058a0c7105d932b5"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/JeffreyWay/Laravel-4-Generators/zipball/4a215769643507326192a739058a0c7105d932b5",
-                "reference": "4a215769643507326192a739058a0c7105d932b5",
-                "shasum": ""
-            },
-            "require": {
-                "illuminate/support": "~5.0",
-                "php": ">=5.4.0"
-            },
-            "require-dev": {
-                "behat/behat": "~2.5.1",
-                "behat/mink": "~1.5.0",
-                "behat/mink-extension": "~1.2.0",
-                "behat/mink-goutte-driver": "~1.0.9",
-                "behat/mink-selenium2-driver": "~1.1.1",
-                "phpspec/phpspec": "~2.0",
-                "phpunit/phpunit": "~3.7"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-0": {
-                    "Way\\Generators": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Jeffrey Way",
-                    "email": "jeffrey@jeffrey-way.com"
-                }
-            ],
-            "description": "Rapidly generate resources, migrations, models, and much more.",
-            "time": "2014-10-01 04:00:00"
         }
     ],
     "aliases": [],

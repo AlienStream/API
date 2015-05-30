@@ -1,9 +1,9 @@
 {
-	"name": "Manager",
+	"name": "API",
 	"authors": [
 		""
 	],
-	"description": "AlienStream Manager",
+	"description": "AlienStream API",
 	"license": "proprietary",
 	"private": true,
 	"ignore": [
