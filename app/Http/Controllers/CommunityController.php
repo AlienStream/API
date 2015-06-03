@@ -23,9 +23,9 @@ class CommunityController extends Controller
 
 	public function byName_Tracks($name)
 	{
-		$community = $this->communities
-			->byName($name)
-			->with('sources.tracks.embeddable')
+		$community = Community::query()
+			->where('name', '=', $name)
+			->with('sources.tracks.embeddable', 'sources.tracks.channel.artist')
 			->first();
 
 		$tracks = Collection::make();
