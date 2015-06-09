@@ -20,7 +20,7 @@ Route::get('communities/trending', 'CommunityController@trending');
 Route::get('communities/popular', 'CommunityController@popular');
 Route::get('communities/newest', 'CommunityController@newest');
 Route::get('community/{name}', 'CommunityController@byName');
-Route::get('community/{name}/tracks', 'CommunityController@byName_Tracks');
+Route::get('community/{name}/tracks', 'TrackController@byCommunity');
 
 Route::controllers([
 	'auth' => 'Auth\AuthController',

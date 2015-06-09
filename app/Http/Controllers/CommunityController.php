@@ -21,24 +21,6 @@ class CommunityController extends Controller
 		);
 	}
 
-	public function byName_Tracks($name)
-	{
-		$community = Community::query()
-			->where('name', '=', $name)
-			->with('sources.tracks.embeddable', 'sources.tracks.channel.artist')
-			->first();
-
-		$tracks = Collection::make();
-		foreach ($community->sources as $source) {
-			$tracks = $tracks->merge($source->tracks);
-		}
-
-		return $this->respond(
-			"Tracks For ". $community->name,
-			$tracks
-		);
-	}
-
 	public function index()
 	{
 		return $this->respond(
