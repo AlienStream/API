@@ -1,9 +1,12 @@
 <?php namespace API\Http\Controllers\Auth;
 
 use API\Http\Controllers\Controller;
+use Exception;
 use Illuminate\Contracts\Auth\Guard;
+use Illuminate\Http\Request;
 use Illuminate\Contracts\Auth\Registrar;
 use Illuminate\Foundation\Auth\AuthenticatesAndRegistersUsers;
+use Illuminate\Support\Facades\Auth;
 
 class AuthController extends Controller
 {
@@ -26,7 +29,6 @@ class AuthController extends Controller
 	 *
 	 * @param  \Illuminate\Contracts\Auth\Guard $auth
 	 * @param  \Illuminate\Contracts\Auth\Registrar $registrar
-	 * @return void
 	 */
 	public function __construct(Guard $auth, Registrar $registrar)
 	{
@@ -34,6 +36,58 @@ class AuthController extends Controller
 		$this->registrar = $registrar;
 
 		$this->middleware('guest', ['except' => 'getLogout']);
+	}
+
+	public function postRegister(Request $request)
+	{
+		$validator = $this->registrar->validator($request->all());
+
+		if ($validator->fails())
+		{
+			$validation_errors = array_column($validator->getMessageBag()->toArray(),0);
+			return $this->respondInternalError(
+				implode(" ", $validation_errors)
+			);
+		}
+
+		$this->auth->login($this->registrar->create($request->all()));
+		return $this->respond(
+			"Logged In",
+			Auth::user()
+		);
+	}
+
+	/**
+	 * Handle a login request to the application.
+	 *
+	 * @param  \Illuminate\Http\Request  $request
+	 * @return \Illuminate\Http\Response
+	 */
+	public function postLogin(Request $request)
+	{
+		$this->validate($request, [
+			'email' => 'required|email', 'password' => 'required',
+		]);
+
+		$credentials = $request->only('email', 'password');
+
+		if ($this->auth->attempt($credentials, $request->has('remember')))
+		{
+			return redirect()->intended($this->redirectPath());
+		}
+
+		return redirect($this->loginPath())
+			->withInput($request->only('email', 'remember'))
+			->withErrors([
+				'email' => $this->getFailedLoginMessage(),
+			]);
+	}
+
+	public function getLogout()
+	{
+		$this->auth->logout();
+
+		return redirect(property_exists($this, 'redirectAfterLogout') ? $this->redirectAfterLogout : '/');
 	}
 
 }

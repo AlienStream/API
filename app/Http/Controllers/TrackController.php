@@ -56,10 +56,9 @@ class TrackController extends Controller
 				return $hours <= $time;
 			});
 		}
-
 		return $this->respond(
 			"Tracks For ". $community->name,
-			$tracks
+			array_values($tracks->toArray())
 		);
 	}
 }
