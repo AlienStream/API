@@ -12,6 +12,8 @@
 */
 
 Route::get('/', 'WelcomeController@index');
+Route::get('me', 'UserController@me');
+
 
 Route::get('track', 'TrackController@index');
 
