@@ -24,6 +24,8 @@ class AuthController extends Controller
 
 	use AuthenticatesAndRegistersUsers;
 
+	protected $redirectPath = "/me";
+
 	/**
 	 * Create a new authentication controller instance.
 	 *
@@ -36,51 +38,6 @@ class AuthController extends Controller
 		$this->registrar = $registrar;
 
 		$this->middleware('guest', ['except' => 'getLogout']);
-	}
-
-	public function postRegister(Request $request)
-	{
-		$validator = $this->registrar->validator($request->all());
-
-		if ($validator->fails())
-		{
-			$validation_errors = array_column($validator->getMessageBag()->toArray(),0);
-			return $this->respondInternalError(
-				implode(" ", $validation_errors)
-			);
-		}
-
-		$this->auth->login($this->registrar->create($request->all()));
-		return $this->respond(
-			"Logged In",
-			Auth::user()
-		);
-	}
-
-	/**
-	 * Handle a login request to the application.
-	 *
-	 * @param  \Illuminate\Http\Request  $request
-	 * @return \Illuminate\Http\Response
-	 */
-	public function postLogin(Request $request)
-	{
-		$this->validate($request, [
-			'email' => 'required|email', 'password' => 'required',
-		]);
-
-		$credentials = $request->only('email', 'password');
-
-		if ($this->auth->attempt($credentials, $request->has('remember')))
-		{
-			return redirect()->intended($this->redirectPath());
-		}
-
-		return redirect($this->loginPath())
-			->withInput($request->only('email', 'remember'))
-			->withErrors([
-				'email' => $this->getFailedLoginMessage(),
-			]);
 	}
 
 	public function getLogout()
