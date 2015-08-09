@@ -2,7 +2,10 @@
 
 use AlienStream\Domain\Contracts\Repositories\CommunityRepository;
 use AlienStream\Domain\Implementation\Models\Community;
+use AlienStream\Domain\Implementation\Models\Genre;
+use AlienStream\Domain\Implementation\Models\Source;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Http\Request;
 
 class CommunityController extends Controller
 {
@@ -51,5 +54,71 @@ class CommunityController extends Controller
 			"Newest Communities",
 			$this->communities->newest()
 		);
+	}
+
+	public function create($name, Request $request)
+	{
+		$input = $request::all();
+		$data = array_merge(
+			$input,
+			['name' => $name]
+		);
+
+		// TODO validation
+		$community = Community::create($data);
+		foreach ($request->get('sources') as $sourceUrl) {
+			$source = Source::where('url', '=', $sourceUrl)->first();
+			if (empty($source)) {
+				$source = Source::create([
+					'type' => $this->getSourceType($sourceUrl),
+					'url' => $sourceUrl,
+					'importance' => 100,
+				]);
+			}
+			if ( ! $community->sources->contains($source->id)) {
+				$community->sources()->attach($source);
+			}
+		}
+
+		return $this->respond(
+			"Community Created",
+			$community
+		);
+	}
+
+	public function update($name, Request $request)
+	{
+		$input = $request::all();
+		$data = array_merge(
+			$input,
+			['name' => $name]
+		);
+
+		// TODO validation
+		$community = Community::where('name', '=', $name)->first();
+		$community->update($data);
+		foreach ($request->get('sources') as $sourceUrl) {
+			$source = Source::where('url', '=', $sourceUrl)->first();
+			if (empty($source)) {
+				$source = Source::create([
+					'type' => $this->getSourceType($sourceUrl),
+					'url' => $sourceUrl,
+					'importance' => 100,
+				]);
+			}
+			if ( ! $community->sources->contains($source->id)) {
+				$community->sources()->attach($source);
+			}
+		}
+
+		return $this->respond(
+			"Community Updated",
+			$community
+		);
+	}
+
+	protected function getSourceType($url) {
+		//TODO other source types
+		return "reddit/subreddit";
 	}
 }

@@ -18,7 +18,63 @@ class TrackController extends Controller
 
 	public function index()
 	{
-		return $this->tracks->all();
+		return $this->respond(
+			"All Tracks",
+			$this->tracks->all()
+		);
+	}
+
+	public function trending()
+	{
+		return $this->respond(
+			"Trending Tracks",
+			$this->tracks->trending()
+		);
+	}
+
+	public function popular()
+	{
+		return $this->respond(
+			"Popular Tracks",
+			$this->tracks->popular()
+		);
+	}
+
+	public function newest()
+	{
+		return $this->respond(
+			"Newest Tracks",
+			$this->tracks->newest()
+		);
+	}
+
+	public function byId($id)
+	{
+		return $this->respond(
+			"Track Found",
+			$this->tracks->find($id)
+		);
+	}
+
+	public function favorite($id)
+	{
+		$track = $this->tracks->find($id);
+		$user = Auth::user();
+
+		return $this->respond(
+			"Track Favorited",
+			$this->tracks->find($id)
+		);
+	}
+	public function flag($id)
+	{
+		$track = $this->tracks->find($id);
+		$user = Auth::user();
+
+		return $this->respond(
+			"Track Flagged",
+			$this->tracks->find($id)
+		);
 	}
 
 	public function byCommunity($name) {
