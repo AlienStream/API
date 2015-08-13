@@ -32,6 +32,9 @@ Route::get('artists/trending', 'ArtistController@trending');
 Route::get('artists/popular', 'ArtistController@popular');
 Route::get('artists/newest', 'ArtistController@newest');
 Route::get('artist/{id}', 'ArtistController@byId');
+Route::group(['middleware' => 'auth'], function () {
+	Route::post('artist/{id}/favorite', 'artistController@favorite');
+});
 
 Route::get('genres', 'GenreController@index');
 Route::get('genre/{id}', 'GenreController@byId');
@@ -44,7 +47,13 @@ Route::get('community/{name}', 'CommunityController@byName');
 Route::get('community/{name}/tracks', 'TrackController@byCommunity');
 Route::group(['middleware' => 'auth'], function () {
 	Route::post('community/{name}', 'CommunityController@create');
+	Route::post('community/{name}', 'CommunityController@favorite');
 	Route::put('community/{name}', 'CommunityController@update');
+});
+
+Route::group(['middleware' => 'auth'], function () {
+	Route::get('user/{id}/favorited_communities', 'UserController@favoritedCommunities');
+	Route::get('user/{id}/moderated_communities', 'UserController@moderatedCommunities');
 });
 
 

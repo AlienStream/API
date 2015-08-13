@@ -44,7 +44,57 @@ class AuthController extends Controller
 	{
 		$this->auth->logout();
 
-		return redirect(property_exists($this, 'redirectAfterLogout') ? $this->redirectAfterLogout : '/');
+		return $this->respond(
+			'Successfully Logged Out'
+		);
+	}
+
+	/**
+	 * Handle a registration request for the application.
+	 *
+	 * @param  \Illuminate\Http\Request  $request
+	 * @return \Illuminate\Http\Response
+	 */
+	public function postRegister(Request $request)
+	{
+		$validator = $this->registrar->validator($request->all());
+
+		if ($validator->fails())
+		{
+			return $this->respondWithError($validator->getMessageBag()->first());
+		}
+
+		$this->auth->login($this->registrar->create($request->all()));
+
+		return $this->respond(
+			'Successfully Created User',
+			$this->auth->user()
+		);
+	}
+
+	/**
+	 * Handle a login request to the application.
+	 *
+	 * @param  \Illuminate\Http\Request  $request
+	 * @return \Illuminate\Http\Response
+	 */
+	public function postLogin(Request $request)
+	{
+		$this->validate($request, [
+			'email' => 'required|email', 'password' => 'required',
+		]);
+
+		$credentials = $request->only('email', 'password');
+
+		if ($this->auth->attempt($credentials, $request->has('remember')))
+		{
+			return $this->respond(
+				'Successfully Logged In As User',
+				$this->auth->user()
+			);
+		}
+
+		return $this->respondWithError('Could Not Login');
 	}
 
 }

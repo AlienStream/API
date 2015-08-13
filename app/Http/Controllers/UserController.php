@@ -18,4 +18,22 @@ class UserController extends Controller
             Auth::user()
         );
     }
+
+    public function favoritedCommunities($userId) {
+        $user = $this->users->find($userId);
+        return $this->respond(
+            'User Favorited Communities',
+            $user->favoritedCommunities
+        );
+
+    }
+
+    public function moderatedCommunities($userId) {
+        $user = $this->users->find($userId);
+
+        return $this->respond(
+            'User Moderated Communities',
+            $user->favoritedCommunities
+        );
+    }
 }
