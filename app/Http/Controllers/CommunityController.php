@@ -5,6 +5,7 @@ use AlienStream\Domain\Implementation\Models\Community;
 use AlienStream\Domain\Implementation\Models\Genre;
 use AlienStream\Domain\Implementation\Models\Source;
 use Illuminate\Database\Eloquent\Collection;
+use Auth;
 use Illuminate\Http\Request;
 
 class CommunityController extends Controller
@@ -66,6 +67,7 @@ class CommunityController extends Controller
 
 		// TODO validation
 		$community = Community::create($data);
+		Auth::user()->moderatedCommunities()->attach($community);
 		foreach ($request->get('sources') as $requestSource) {
 			$source = Source::where('url', '=', $requestSource['url'])->first();
 			if (empty($source)) {
