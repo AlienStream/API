@@ -58,7 +58,7 @@ class CommunityController extends Controller
 
 	public function create($name, Request $request)
 	{
-		$input = $request::all();
+		$input = $request->all();
 		$data = array_merge(
 			$input,
 			['name' => $name]
@@ -66,12 +66,15 @@ class CommunityController extends Controller
 
 		// TODO validation
 		$community = Community::create($data);
-		foreach ($request->get('sources') as $sourceUrl) {
-			$source = Source::where('url', '=', $sourceUrl)->first();
+		foreach ($request->get('sources') as $requestSource) {
+			$source = Source::where('url', '=', $requestSource['url'])->first();
 			if (empty($source)) {
 				$source = Source::create([
-					'type' => $this->getSourceType($sourceUrl),
-					'url' => $sourceUrl,
+					'title' => $requestSource['title'],
+					'type' => $this->getSourceType($requestSource['url']),
+					'description' => $requestSource['description'],
+					'thumbnail' => $requestSource['thumbnail'],
+					'url' => $requestSource['url'],
 					'importance' => 100,
 				]);
 			}
@@ -97,12 +100,15 @@ class CommunityController extends Controller
 		// TODO validation
 		$community = Community::where('name', '=', $name)->first();
 		$community->update($data);
-		foreach ($request->get('sources') as $sourceUrl) {
-			$source = Source::where('url', '=', $sourceUrl)->first();
+		foreach ($request->get('sources') as $requestSource) {
+			$source = Source::where('url', '=', $requestSource['url'])->first();
 			if (empty($source)) {
 				$source = Source::create([
-					'type' => $this->getSourceType($sourceUrl),
-					'url' => $sourceUrl,
+					'title' => $requestSource['title'],
+					'type' => $this->getSourceType($requestSource['url']),
+					'description' => $requestSource['description'],
+					'thumbnail' => $requestSource['thumbnail'],
+					'url' => $requestSource['url'],
 					'importance' => 100,
 				]);
 			}

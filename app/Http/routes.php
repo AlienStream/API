@@ -47,7 +47,7 @@ Route::get('community/{name}', 'CommunityController@byName');
 Route::get('community/{name}/tracks', 'TrackController@byCommunity');
 Route::group(['middleware' => 'auth'], function () {
 	Route::post('community/{name}', 'CommunityController@create');
-	Route::post('community/{name}', 'CommunityController@favorite');
+	Route::post('community/{name}/favorite', 'CommunityController@favorite');
 	Route::put('community/{name}', 'CommunityController@update');
 });
 
