@@ -68,22 +68,25 @@ class CommunityController extends Controller
 		// TODO validation
 		$community = Community::create($data);
 		Auth::user()->moderatedCommunities()->attach($community);
-		foreach ($request->get('sources') as $requestSource) {
-			$source = Source::where('url', '=', $requestSource['url'])->first();
-			if (empty($source)) {
-				$source = Source::create([
-					'title' => $requestSource['title'],
-					'type' => $this->getSourceType($requestSource['url']),
-					'description' => $requestSource['description'],
-					'thumbnail' => $requestSource['thumbnail'],
-					'url' => $requestSource['url'],
-					'importance' => 100,
-				]);
-			}
-			if ( ! $community->sources->contains($source->id)) {
-				$community->sources()->attach($source);
+		if ($request->has('sources')) {
+			foreach ($request->get('sources') as $requestSource) {
+				$source = Source::where('url', '=', $requestSource['url'])->first();
+				if (empty($source)) {
+					$source = Source::create([
+						'title' => $requestSource['title'],
+						'type' => $this->getSourceType($requestSource['url']),
+						'description' => $requestSource['description'],
+						'thumbnail' => $requestSource['thumbnail'],
+						'url' => $requestSource['url'],
+						'importance' => 100,
+					]);
+				}
+				if ( ! $community->sources->contains($source->id)) {
+					$community->sources()->attach($source);
+				}
 			}
 		}
+
 
 		return $this->respond(
 			"Community Created",
@@ -102,20 +105,23 @@ class CommunityController extends Controller
 		// TODO validation
 		$community = Community::where('name', '=', $name)->first();
 		$community->update($data);
-		foreach ($request->get('sources') as $requestSource) {
-			$source = Source::where('url', '=', $requestSource['url'])->first();
-			if (empty($source)) {
-				$source = Source::create([
-					'title' => $requestSource['title'],
-					'type' => $this->getSourceType($requestSource['url']),
-					'description' => $requestSource['description'],
-					'thumbnail' => $requestSource['thumbnail'],
-					'url' => $requestSource['url'],
-					'importance' => 100,
-				]);
-			}
-			if ( ! $community->sources->contains($source->id)) {
-				$community->sources()->attach($source);
+
+		if ($request->has('sources')) {
+			foreach ($request->get('sources') as $requestSource) {
+				$source = Source::where('url', '=', $requestSource['url'])->first();
+				if (empty($source)) {
+					$source = Source::create([
+						'title' => $requestSource['title'],
+						'type' => $this->getSourceType($requestSource['url']),
+						'description' => $requestSource['description'],
+						'thumbnail' => $requestSource['thumbnail'],
+						'url' => $requestSource['url'],
+						'importance' => 100,
+					]);
+				}
+				if (!$community->sources->contains($source->id)) {
+					$community->sources()->attach($source);
+				}
 			}
 		}
 
