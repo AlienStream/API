@@ -4,8 +4,9 @@ use AlienStream\Domain\Contracts\Repositories\TrackRepository;
 use AlienStream\Domain\Implementation\Models\Track;
 use AlienStream\Domain\Implementation\Models\Community;
 use DateTime;
+use DB;
+use Input;
 use Illuminate\Support\Collection;
-use Illuminate\Support\Facades\Input;
 
 class TrackController extends Controller
 {
@@ -80,16 +81,28 @@ class TrackController extends Controller
 	public function byCommunity($name) {
 		$sort = Input::get('sort');
 		$time = Input::get('t');
+
 		$community = Community::query()
 			->where('name', '=', $name)
-			->with('sources.tracks.embeddable', 'sources.tracks.channel.artist')
-			->first();
+			->firstOrFail();
 
-		$tracks = Collection::make();
-		foreach ($community->sources as $source) {
-			$tracks = $tracks->merge($source->tracks);
-		}
+		$tracks = Track::query()
+			->join('source_track', 'tracks.id', '=', 'source_track.track_id')
+			->join('community_source', 'source_track.source_id', '=', 'community_source.source_id')
+			->select('*')
+			->where('community_id', '=', $community->id)
+			->with('embeddable', 'channel.artist')
+			->orderBy('created_at', 'DESC')
+			->where(function($query) use ($sort, $time) {
+				// Filter by Date
+				if ($sort === "top" && ! empty($time)) {
+					return $query->whereRAW('created_at >= DATE_SUB(NOW(), INTERVAL ? HOUR)', [$time]);
+				}
 
+				return $query;
+			})
+			->get();
+		
 		// default: Filter by hotness
 		if (empty($sort) || $sort === "hot") {
 			$tracks = $tracks->keyBy('id')->sortBy(function ($track) {
@@ -102,16 +115,6 @@ class TrackController extends Controller
 			});
 		}
 
-		// Filter by Date
-		if ($sort === "top" && ! empty($time)) {
-			$tracks = $tracks->filter(function($track) use ($time) {
-				$now = new DateTime();
-				$diff = (new DateTime($track->created_at))->diff($now);
-				$hours = $diff->h;
-				$hours = $hours + ($diff->days * 24);
-				return $hours <= $time;
-			});
-		}
 		return $this->respond(
 			"Tracks For ". $community->name,
 			array_values($tracks->toArray())
