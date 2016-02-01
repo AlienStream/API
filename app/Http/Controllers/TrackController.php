@@ -86,34 +86,25 @@ class TrackController extends Controller
 			->where('name', '=', $name)
 			->firstOrFail();
 
-		$tracks = Track::query()
+		$rawTrackQuery = Track::query()
 			->join('source_track', 'tracks.id', '=', 'source_track.track_id')
 			->join('community_source', 'source_track.source_id', '=', 'community_source.source_id')
-			->select('*')
 			->where('community_id', '=', $community->id)
-			->with('embeddable', 'channel.artist')
-			->orderBy('created_at', 'DESC')
-			->where(function($query) use ($sort, $time) {
-				// Filter by Date
-				if ($sort === "top" && ! empty($time)) {
-					return $query->whereRAW('created_at >= DATE_SUB(NOW(), INTERVAL ? HOUR)', [$time]);
-				}
+			->with('embeddable', 'channel.artist');
 
-				return $query;
-			})
-			->get();
-		
-		// default: Filter by hotness
-		if (empty($sort) || $sort === "hot") {
-			$tracks = $tracks->keyBy('id')->sortBy(function ($track) {
-				$now = new DateTime();
-				$diff = (new DateTime($track->created_at))->diff($now);
-				$hours = $diff->h;
-				$hours = $hours + ($diff->days * 24);
-				$hotness = $track->rank / ($hours+1);
-				return $hotness;
-			});
+		if ($sort === "top" && ! empty($time)) {
+			$filteredTrackQuery = $rawTrackQuery
+				->selectRAW("*")
+				->orderBy('created_at', 'DESC')
+				->whereRAW('created_at >= DATE_SUB(NOW(), INTERVAL ? HOUR)', [$time]);
+		} else {
+			$filteredTrackQuery = $rawTrackQuery
+				->selectRAW("*, tracks.rank / TIMESTAMPDIFF(HOUR, tracks.created_at, NOW()) as hotness")
+				->orderBy('hotness', 'DESC')
+				->limit(250);
 		}
+
+		$tracks = $filteredTrackQuery->get();
 
 		return $this->respond(
 			"Tracks For ". $community->name,
