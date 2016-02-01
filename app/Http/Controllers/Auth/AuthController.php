@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Contracts\Auth\Registrar;
 use Illuminate\Foundation\Auth\AuthenticatesAndRegistersUsers;
 use Illuminate\Support\Facades\Auth;
+use Session;
 
 class AuthController extends Controller
 {
@@ -88,6 +89,7 @@ class AuthController extends Controller
 
 		if ($this->auth->attempt($credentials, $request->has('remember')))
 		{
+			Session::save();
 			return $this->respond(
 				'Successfully Logged In As User',
 				$this->auth->user()

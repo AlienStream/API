@@ -21,7 +21,7 @@ class UserController extends Controller
 
     public function favoritedCommunities($userId) {
         $user = $this->users->find($userId);
-        return $this->respond(
+	return $this->respond(
             'User Favorited Communities',
             $user->favoritedCommunities
         );
@@ -33,7 +33,7 @@ class UserController extends Controller
 
         return $this->respond(
             'User Moderated Communities',
-            $user->favoritedCommunities
+            $user->moderatedCommunities
         );
     }
 }

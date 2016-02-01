@@ -16,34 +16,11 @@ return array(
      |
      */
     'defaults' => array(
-        'supportsCredentials' => false,
-        'allowedOrigins' => array(),
-        'allowedHeaders' => array(),
-        'allowedMethods' => array(),
-        'exposedHeaders' => array(),
-        'maxAge' => 0,
-        'hosts' => array(),
-    ),
-
-    'paths' => array(
-        'api/*' => array(
-            'allowedOrigins' => array('*'),
-            'allowedHeaders' => array('*'),
-            'allowedMethods' => array('*'),
-            'maxAge' => 3600,
-        ),
-        'auth/*' => array(
-            'allowedOrigins' => array('*'),
-            'allowedHeaders' => array('*'),
-            'allowedMethods' => array('*'),
-            'maxAge' => 3600,
-        ),
-        '*' => array(
-            'allowedOrigins' => array('*'),
-            'allowedHeaders' => array('*'),
-            'allowedMethods' => array('*'),
-            'maxAge' => 3600,
-        ),
+        'supportsCredentials' => true,
+        'allowedOrigins' => array('*'),
+        'allowedHeaders' => array('*'),
+        'allowedMethods' => array('*'),
+        'maxAge' => 3600,
     ),
 
 );
