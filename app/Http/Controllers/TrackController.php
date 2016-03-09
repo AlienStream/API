@@ -3,6 +3,7 @@
 use AlienStream\Domain\Contracts\Repositories\TrackRepository;
 use AlienStream\Domain\Implementation\Models\Track;
 use AlienStream\Domain\Implementation\Models\Community;
+use Auth;
 use DateTime;
 use DB;
 use Input;
@@ -62,19 +63,82 @@ class TrackController extends Controller
 		$track = $this->tracks->find($id);
 		$user = Auth::user();
 
+		if ($user->favoritedTracks !== null && $user->favoritedTracks->contains($track->id)) {
+			return $this->respondInvalidInput(
+				"Track Has already been favorited",
+				$track
+			);
+		}
+
+		$track->increment('favorite_count');
+		$user->favoritedTracks()->save($track);
+
 		return $this->respond(
 			"Track Favorited",
-			$this->tracks->find($id)
+			$track
 		);
 	}
+
+	public function unfavorite($id)
+	{
+		$track = $this->tracks->find($id);
+		$user = Auth::user();
+
+		if ( ! ($user->favoritedTracks !== null &&  $user->favoritedTracks->contains($track->id))) {
+			return $this->respondInvalidInput(
+				"Track Has Not Been Favorited",
+				$track
+			);
+		}
+
+		$track->decrement('favorite_count');
+		$user->favoritedTracks()->detach($track->id);
+
+		return $this->respond(
+			"Track Unfavorited",
+			$track
+		);
+	}
+
 	public function flag($id)
 	{
 		$track = $this->tracks->find($id);
 		$user = Auth::user();
 
+		if ($user->flaggedTracks !== null && $user->flaggedTracks->contains($track->id)) {
+			return $this->respondInvalidInput(
+				"Track Has Already been flagged",
+				$track
+			);
+		}
+
+		$track->increment('content_flags');
+		$user->flaggedTracks()->save($track);
+
 		return $this->respond(
 			"Track Flagged",
-			$this->tracks->find($id)
+			$track
+		);
+	}
+
+	public function unflag($id)
+	{
+		$track = $this->tracks->find($id);
+		$user = Auth::user();
+
+		if ( ! ($user->flaggedTracks !== null && $user->flaggedTracks->contains($track->id))) {
+			return $this->respondInvalidInput(
+				"Track Has Not Been Flagged",
+				$track
+			);
+		}
+
+		$track->decrement('content_flags');
+		$user->flaggedTracks()->delete($track);
+
+		return $this->respond(
+			"Track Unflagged",
+			$track
 		);
 	}
 
@@ -105,9 +169,27 @@ class TrackController extends Controller
 
 		$tracks = $filteredTrackQuery->limit(250)->get();
 
+		$tracks = $this->mapFlagsAndFavorites($tracks, Auth::user());
+
 		return $this->respond(
 			"Tracks For ". $community->name,
 			array_values($tracks->toArray())
 		);
+	}
+
+	protected function mapFlagsAndFavorites($tracks, $user)
+	{
+		if ($user !== null) {
+			$favorites = $user->favoritedTracks;
+			$flags = $user->flaggedTracks;
+
+			$tracks = $tracks->map(function($track) use ($favorites, $flags) {
+				$track->favorited = $favorites->contains($track->id);
+				$track->flagged = $flags->contains($track->id);
+				return $track;
+			});
+		}
+
+		return $tracks;
 	}
 }

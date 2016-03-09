@@ -13,7 +13,7 @@
 
 Route::get('/', 'WelcomeController@index');
 Route::group(['middleware' => 'auth'], function () {
-	Route::get('me', 'UserController@me');
+	Route::get('user/me', 'UserController@me');
 });
 
 
@@ -25,6 +25,8 @@ Route::get('track/{id}', 'TrackController@byId');
 Route::group(['middleware' => 'auth'], function () {
 	Route::post('track/{id}/favorite', 'TrackController@favorite');
 	Route::post('track/{id}/flag', 'TrackController@flag');
+	Route::delete('track/{id}/favorite', 'TrackController@unfavorite');
+	Route::delete('track/{id}/flag', 'TrackController@unflag');
 });
 
 Route::get('artists', 'ArtistController@index');
@@ -52,6 +54,7 @@ Route::group(['middleware' => 'auth'], function () {
 });
 
 Route::group(['middleware' => 'auth'], function () {
+	Route::get('user/{id}/favorited_tracks', 'UserController@favoritedTracks');
 	Route::get('user/{id}/favorited_communities', 'UserController@favoritedCommunities');
 	Route::get('user/{id}/moderated_communities', 'UserController@moderatedCommunities');
 });

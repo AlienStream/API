@@ -135,7 +135,7 @@ return [
 	|
 	*/
 
-	'domain' => '.alienstream.com',
+	'domain' =>  env(APP_DEBUG) ? '.alienstream.dev' : '.alienstream.com',
 
 	/*
 	|--------------------------------------------------------------------------

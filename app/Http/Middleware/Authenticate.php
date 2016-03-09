@@ -1,5 +1,6 @@
 <?php namespace API\Http\Middleware;
 
+use Auth;
 use Closure;
 use Illuminate\Contracts\Auth\Guard;
 
@@ -33,7 +34,10 @@ class Authenticate
 	 */
 	public function handle($request, Closure $next)
 	{
-		//TODO Auth Reject for routes
+		if ( ! Auth::check()) {
+			return $this->respondUnauthorized();
+		}
+
 		return $next($request);
 	}
 
