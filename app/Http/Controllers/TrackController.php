@@ -95,16 +95,15 @@ class TrackController extends Controller
 		if ($sort === "top" && ! empty($time)) {
 			$filteredTrackQuery = $rawTrackQuery
 				->selectRAW("*")
-				->orderBy('created_at', 'DESC')
+				->orderBy('rank', 'DESC')
 				->whereRAW('created_at >= DATE_SUB(NOW(), INTERVAL ? HOUR)', [$time]);
 		} else {
 			$filteredTrackQuery = $rawTrackQuery
 				->selectRAW("*, tracks.rank / TIMESTAMPDIFF(HOUR, tracks.created_at, NOW()) as hotness")
-				->orderBy('hotness', 'DESC')
-				->limit(250);
+				->orderBy('hotness', 'DESC');
 		}
 
-		$tracks = $filteredTrackQuery->get();
+		$tracks = $filteredTrackQuery->limit(250)->get();
 
 		return $this->respond(
 			"Tracks For ". $community->name,
